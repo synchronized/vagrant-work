@@ -1,0 +1,4 @@
+---
+sudogroup: admin
+user: sunday
+publickeyfile: sunday.pub

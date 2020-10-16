@@ -1,0 +1,13 @@
+---
+- debug: msg="/home/{{ user }}/.dotfiles"
+- name: git clone dotfiles
+  remote_user: "{{ user }}"
+  git:
+    dest: "/home/{{ user }}/.dotfiles"
+    repo: https://github.com/synchronized/dotfiles.git
+    depth: 1
+- name: install dotfiles
+  remote_user: "{{ user }}"
+  command:
+    cmd: "/home/{{ user }}/.dotfiles/install.sh --all"
+    creates: "/home/{{ user }}/.spacemacs"

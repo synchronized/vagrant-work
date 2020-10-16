@@ -1,0 +1,23 @@
+---
+- name: create group sudogroup
+  group:
+    name: "{{ sudogroup }}" 
+    state: present
+- name: sudo without password for sudogroup group
+  copy:
+    content: "%{{ sudogroup }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    dest: "/etc/sudoers.d/{{ sudogroup }}_nopasswd"
+    mode: 0440
+- name: create user
+  user:
+    name: "{{ user }}"
+    state: present 
+    groups: "{{ sudogroup }}"
+    append: yes
+    createhome: yes
+- name: ssh-copy
+  authorized_key:
+    user: "{{ user }}"
+    key: "{{ item }}"
+  with_file: 
+    - "{{ publickeyfile }}"

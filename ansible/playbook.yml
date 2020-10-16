@@ -7,49 +7,16 @@
     sudogroup: admin
     user: sunday
     publickeyfile: /vagrant/key/sunday.pub
-  tasks:
-    - name: create group sudogroup
-      group:
-        name: "{{ sudogroup }}" 
-        state: present
-    - name: sudo without password for sudogroup group
-      copy:
-        content: "%{{ sudogroup }} ALL=(ALL:ALL) NOPASSWD:ALL"
-        dest: "/etc/sudoers.d/{{ sudogroup }}_nopasswd"
-        mode: 0440
-    - name: create user
-      user:
-        name: "{{ user }}"
-        state: present 
-        groups: "{{ sudogroup }}"
-        append: yes
-        createhome: yes
-    - name: ssh-copy
-      authorized_key:
-        user: "{{ user }}"
-        key: "{{ item }}"
-      with_file: 
-        - "{{ publickeyfile }}"
-    - name: install package
-      package:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - git
-        - zsh
-        - vim
-        - curl
-        - wget
-        - tmux
-    - debug: msg="/home/{{ user }}/.dotfiles"
-    - name: git clone dotfiles
-      remote_user: "{{ user }}"
-      git:
-        dest: "/home/{{ user }}/.dotfiles"
-        repo: https://github.com/synchronized/dotfiles.git
-        depth: 1
-    - name: install dotfiles
-      remote_user: "{{ user }}"
-      command:
-        cmd: "/home/{{ user }}/.dotfiles/install.sh --all"
-        creates: "/home/{{ user }}/.spacemacs"
+    hostfile: /vagrant/config/hosts.github
+    packagelist:
+      - git
+      - zsh
+      - vim
+      - curl
+      - wget
+      - tmux
+  roles:
+    - role: user
+    - role: host
+    - role: package
+    - role: dotfiles

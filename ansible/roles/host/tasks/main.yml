@@ -1,0 +1,6 @@
+---
+- name: config /etc/hosts
+  lineinfile:
+    dest: "/etc/hosts" 
+    line: "{{ item }}"
+  with_file: "{{ hostsfile }}"
