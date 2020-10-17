@@ -7,13 +7,15 @@
 [[ -s "${HOME}/.gvm/scripts/gvm" ]] && source "${HOME}/.gvm/scripts/gvm"
 
 # fzf configuration
-[[ -s "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh"
+[[ -s "${HOME}/.fzf.bash" ]] && source "${HOME}/.fzf.bash"
 
 # pyenv configuration
+[[ -d "${HOME}/.pyenv/bin" ]] && export PATH="${HOME}/.pyenv/bin:$PATH"
 [[ -d "${HOME}/.pyenv/bin" ]] && eval "$(pyenv init -)"
-[[ -d "${HOME}/.pyenv/bin" ]] && eval "$(pyenv virtualenv-init -)"
+[[ -d "${HOME}/.pyenv/plugins/pyenv-virtualenv" ]] && eval "$(pyenv virtualenv-init -)"
 
 # plenv configuration
+[[ -d "${HOME}/.plenv/bin" ]] && export PATH="${HOME}/.plenv/bin:$PATH"
 [[ -d "${HOME}/.plenv/bin" ]] && eval "$(plenv init -)"
 
 # direnv configuration
