@@ -1,6 +1,7 @@
 ---
 user: sunday
 linkfiles: 
+- {src: vim,       dest: .vim}
 - {src: zshrc,     dest: .zshrc}
 - {src: zshenv,    dest: .zshenv}
 - {src: tmux.conf, dest: .tmux.conf}

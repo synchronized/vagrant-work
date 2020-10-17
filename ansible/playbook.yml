@@ -14,5 +14,7 @@
       - vim
       - direnv 
       - tmux
+      - emacs
+      - ranger
   roles:
     - role: dotfiles

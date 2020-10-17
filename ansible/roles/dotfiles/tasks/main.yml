@@ -31,6 +31,14 @@
   with_file:
     - bashrc
 
+- name: git clone spacemacs
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    dest: "/home/{{ user }}/.emacs.d"
+    repo: https://github.com/syl20bnr/spacemacs
+    depth: 1
+
 - name: git clone fzf
   become: yes
   become_user: "{{ user }}"
