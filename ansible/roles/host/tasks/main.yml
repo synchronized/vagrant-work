@@ -1,6 +1,10 @@
 ---
+- debug: config /etc/host {{ item }}
+  with_file:
+    - "{{ hostsfile }}"
 - name: config /etc/hosts
   lineinfile:
     dest: "/etc/hosts" 
     line: "{{ item }}"
-  with_file: "{{ hostsfile }}"
+  with_file:
+    - "{{ hostsfile }}"

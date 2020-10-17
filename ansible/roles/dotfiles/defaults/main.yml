@@ -1,2 +1,11 @@
 ---
 user: sunday
+linkfiles: 
+- {src: zshrc,     dest: .zshrc}
+- {src: zshenv,    dest: .zshenv}
+- {src: tmux.conf, dest: .tmux.conf}
+- {src: spacemacs, dest: .spacemacs}
+- {src: gitconfig, dest: .gitconfig}
+- {src: globalrc,  dest: .globalrc}
+- {src: latexmkrc, dest: .latexmkrc}
+

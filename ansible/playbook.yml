@@ -4,19 +4,15 @@
   become: yes
   gather_facts: no
   vars:
-    sudogroup: admin
     user: sunday
-    publickeyfile: /vagrant/key/sunday.pub
-    hostfile: /vagrant/config/hosts.github
     packagelist:
+      - curl
+      - wget
+      - acl
       - git
       - zsh
       - vim
-      - curl
-      - wget
+      - direnv 
       - tmux
   roles:
-    - role: user
-    - role: host
-    - role: package
     - role: dotfiles

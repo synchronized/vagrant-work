@@ -12,6 +12,7 @@
   user:
     name: "{{ user }}"
     state: present 
+    shell: /bin/bash
     groups: "{{ sudogroup }}"
     append: yes
     createhome: yes

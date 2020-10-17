@@ -1,13 +1,90 @@
 ---
 - debug: msg="/home/{{ user }}/.dotfiles"
 - name: git clone dotfiles
-  remote_user: "{{ user }}"
+  become: yes
+  become_user: "{{ user }}"
   git:
     dest: "/home/{{ user }}/.dotfiles"
     repo: https://github.com/synchronized/dotfiles.git
     depth: 1
-- name: install dotfiles
-  remote_user: "{{ user }}"
-  command:
-    cmd: "/home/{{ user }}/.dotfiles/install.sh --all"
-    creates: "/home/{{ user }}/.spacemacs"
+    recursive: yes
+- debug: msg="/home/{{ user }}/{{ item.src }} -> /home/{{ user }}/.dotfiles/{{ item.dest }} ."
+  with_items: "{{ linkfiles }}"
+- name: create dotfiles link
+  become: yes
+  become_user: "{{ user }}"
+  file: 
+    group: "{{ user }}" 
+    owner: "{{ user }}"
+    src: "/home/{{ user }}/.dotfiles/{{ item.src }}"
+    dest: "/home/{{ user }}/{{ item.dest }}"
+    state: link
+  with_items: "{{ linkfiles }}"
+
+- debug: config /home/{{ user }}/.bashrc {{ item }}
+  with_file:
+    - bashrc
+- name: config /home/{{ user }}/.bashrc
+  lineinfile:
+    dest: "/home/{{ user }}/.bashrc" 
+    line: "{{ item }}"
+  with_file:
+    - bashrc
+
+- name: git clone fzf
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    dest: "/home/{{ user }}/.fzf"
+    repo: https://github.com/junegunn/fzf.git
+    depth: 1
+- name: install fzf
+  become: yes
+  become_user: "{{ user }}"
+  command: ~/.fzf/install --key-bindings --completion --no-update-rc
+
+- name: install nvm
+  become: yes
+  become_user: "{{ user }}"
+  shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+  args:
+    creates: "/home/{{ user }}/.nvm/nvm.sh"
+- name: install nvm-node
+  become: yes
+  become_user: "{{ user }}"
+  shell: >
+    source /home/{{ user }}/.nvm/nvm.sh && nvm install --lts=erbium && nvm alias default node
+  args:
+    executable: /bin/bash
+
+- name: install gvm
+  become: yes
+  become_user: "{{ user }}"
+  shell: >
+    curl -s -S -L -o- https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | bash
+  args:
+    creates: "/home/{{ user }}/.gvm/scripts/gvm"
+
+- name: install pyenv
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    dest: "/home/{{ user }}/.pyenv"
+    repo: https://github.com/pyenv/pyenv.git
+    depth: 1
+- name: install pyenv virtualenv
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    dest: "/home/{{ user }}/.pyenv/plugins/pyenv-virtualenv"
+    repo: https://github.com/pyenv/pyenv-virtualenv.git
+    depth: 1
+
+- name: install plenv
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    dest: "/home/{{ user }}/.plenv"
+    repo: https://github.com/tokuhirom/plenv.git
+    depth: 1
