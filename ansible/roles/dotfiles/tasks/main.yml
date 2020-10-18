@@ -96,3 +96,19 @@
     dest: "/home/{{ user }}/.plenv"
     repo: https://github.com/tokuhirom/plenv.git
     depth: 1
+
+- name: install vim plugins
+  become: yes
+  become_user: "{{ user }}"
+  shell: >
+    /home/{{ user }}/.vim/install.sh
+  args:
+    executable: /bin/bash
+
+- name: install zsh plugins
+  become: yes
+  become_user: "{{ user }}"
+  shell: >
+    echo install zsh plugins
+  args:
+    executable: /bin/zsh
