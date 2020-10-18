@@ -3,6 +3,8 @@
 - name: git clone dotfiles
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   git:
     dest: "/home/{{ user }}/.dotfiles"
     repo: https://github.com/synchronized/dotfiles.git
@@ -25,6 +27,8 @@
   with_file:
     - bashrc
 - name: config /home/{{ user }}/.bashrc
+  become: yes
+  become_user: "{{ user }}"
   lineinfile:
     dest: "/home/{{ user }}/.bashrc" 
     line: "{{ item }}"
@@ -34,6 +38,8 @@
 - name: git clone spacemacs
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   git:
     dest: "/home/{{ user }}/.emacs.d"
     repo: https://github.com/syl20bnr/spacemacs
@@ -42,6 +48,8 @@
 - name: git clone fzf
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   git:
     dest: "/home/{{ user }}/.fzf"
     repo: https://github.com/junegunn/fzf.git
@@ -49,11 +57,15 @@
 - name: install fzf
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   command: ~/.fzf/install --key-bindings --completion --no-update-rc
 
 - name: install nvm
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   shell: >
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
   args:
@@ -61,6 +73,8 @@
 - name: install nvm-node
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   shell: >
     source /home/{{ user }}/.nvm/nvm.sh && nvm install --lts=erbium && nvm alias default node
   args:
@@ -69,6 +83,8 @@
 - name: install gvm
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   shell: >
     curl -s -S -L -o- https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | bash
   args:
@@ -77,6 +93,8 @@
 - name: install pyenv
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   git:
     dest: "/home/{{ user }}/.pyenv"
     repo: https://github.com/pyenv/pyenv.git
@@ -84,6 +102,8 @@
 - name: install pyenv virtualenv
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   git:
     dest: "/home/{{ user }}/.pyenv/plugins/pyenv-virtualenv"
     repo: https://github.com/pyenv/pyenv-virtualenv.git
@@ -92,10 +112,22 @@
 - name: install plenv
   become: yes
   become_user: "{{ user }}"
+  retries: 3
+  delay: 3
   git:
     dest: "/home/{{ user }}/.plenv"
     repo: https://github.com/tokuhirom/plenv.git
     depth: 1
+
+- name: install zsh plugins
+  become: yes
+  become_user: "{{ user }}"
+  retries: 3
+  delay: 3
+  shell: >
+    echo install zsh plugins
+  args:
+    executable: /bin/zsh
 
 - name: install vim plugins
   become: yes
@@ -104,11 +136,4 @@
     /home/{{ user }}/.vim/install.sh
   args:
     executable: /bin/bash
-
-- name: install zsh plugins
-  become: yes
-  become_user: "{{ user }}"
-  shell: >
-    echo install zsh plugins
-  args:
-    executable: /bin/zsh
+  ignore_errors: yes
