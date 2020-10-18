@@ -5,6 +5,7 @@
   gather_facts: no
   vars:
     user: sunday
+    publickeyfile: /vagrant/key/sunday.pub
     packagelist:
       - curl
       - wget

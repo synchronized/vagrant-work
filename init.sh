@@ -9,6 +9,9 @@ sudo cp /vagrant/config/ubuntu.focal.source.list /etc/apt/sources.list
 
 ##install ansible
 sudo cp /vagrant/config/ubuntu.bionic.source.ansible.list /etc/apt/sources.list.d/ansible.list
+sudo mkdir /vagrant/key
+sudo ssh-keygen -f /vagrant/key/sunday -P ''
+sudo /vagrant/key/sunday.pub /vagrant/ansible/roles/user/files/sunday.pub
 
 maxcount=10          # 最多重试次数
 count=${maxcount}    # 记录重试次数
