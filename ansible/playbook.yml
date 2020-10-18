@@ -10,6 +10,7 @@
       - curl
       - wget
       - acl
+      - xauth
       - git
       - zsh
       - vim
