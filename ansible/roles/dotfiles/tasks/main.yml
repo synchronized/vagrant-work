@@ -43,6 +43,7 @@
   git:
     dest: "/home/{{ user }}/.emacs.d"
     repo: https://github.com/syl20bnr/spacemacs
+    version: develop
     depth: 1
 
 - name: git clone fzf
@@ -89,6 +90,33 @@
     curl -s -S -L -o- https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | bash
   args:
     creates: "/home/{{ user }}/.gvm/scripts/gvm"
+- name: gvm install go1.4
+  become: yes
+  become_user: "{{ user }}"
+  retries: 3
+  delay: 3
+  shell: >
+    gvm install go1.4 -B
+  args:
+    executable: /bin/zsh
+- name: gvm install go1.10
+  become: yes
+  become_user: "{{ user }}"
+  retries: 3
+  delay: 3
+  shell: >
+    gvm install go1.10 && gvm use go1.10 --default
+  args:
+    executable: /bin/zsh
+- name: gvm install go1.13
+  become: yes
+  become_user: "{{ user }}"
+  retries: 3
+  delay: 3
+  shell: >
+    gvm install go1.13
+  args:
+    executable: /bin/zsh
 
 - name: install pyenv
   become: yes
@@ -118,16 +146,6 @@
     dest: "/home/{{ user }}/.plenv"
     repo: https://github.com/tokuhirom/plenv.git
     depth: 1
-
-- name: install zsh plugins
-  become: yes
-  become_user: "{{ user }}"
-  retries: 3
-  delay: 3
-  shell: >
-    echo install zsh plugins
-  args:
-    executable: /bin/zsh
 
 - name: install vim plugins
   become: yes
